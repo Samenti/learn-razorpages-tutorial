@@ -15,7 +15,7 @@
             <p class="description">@Model.FeaturedProduct.Description</p>
         </div>
         <div id="callToAction">
-            <a class="btn btn-danger order-button" asp-page="/order" asp-route-id="@Model.FeaturedProduct.Id" title="Order @Model.FeaturedProduct.Name">Order Now</a>
+            <a class="btn btn-danger order-button" asp-page="/Order" asp-route-id="@Model.FeaturedProduct.Id" title="Order @Model.FeaturedProduct.Name">Order Now</a>
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
 @foreach (var product in Model.Products)
 {
     <div class="col-sm-3">
-        <a asp-page="/order" asp-route-id="@product.Id" title="Order @product.Name">
+        <a asp-page="/Order" asp-route-id="@product.Id" title="Order @product.Name">
             <div class="productInfo">
                 <h3>@product.Name</h3>
                 <img class="product-image img-fluid img-thumbnail" src="~/images/products/thumbnails/@product.ImageName" alt="Image of @product.Name" />
@@ -32,7 +32,7 @@
         </a>
         <div class="action">
             <p class="price float-left">$@string.Format("{0:f}", product.Price)</p>
-            <a class="btn btn-sm btn-danger order-button float-right" asp-page="/order" asp-route-id="@product.Id" title="Order @product.Name">Order Now</a>
+            <a class="btn btn-sm btn-danger order-button float-right" asp-page="/Order" asp-route-id="@product.Id" title="Order @product.Name">Order Now</a>
         </div>
     </div>
 }
