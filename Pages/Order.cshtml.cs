@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.Net.Mail;
 using Bakery.Data;
 using Bakery.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,22 @@ namespace Bakery.Pages
         {
             Product = await db.Products.FindAsync(Id);
             if(ModelState.IsValid){
+                var body = $@"<p>Thank you, we have received your order for {OrderQuantity} unit(s) of {Product.Name}!</p>
+                <p>Your address is: <br/>{OrderShipping.Replace("\n", "<br/>")}</p>
+                Your total is ${Product.Price * OrderQuantity}.<br/>
+                We will contact you if we have questions about your order.  Thanks!<br/>";
+                using(var smtp = new SmtpClient())
+                {
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                    smtp.PickupDirectoryLocation = @"c:\temp";
+                    var message = new MailMessage();
+                    message.To.Add(OrderEmail);
+                    message.Subject = "Fourth Coffee - New Order";
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+                    message.From = new MailAddress("sales@fourthcoffee.com");
+                    await smtp.SendMailAsync(message);
+                }
                 return RedirectToPage("OrderSuccess");
             }
             return Page();
